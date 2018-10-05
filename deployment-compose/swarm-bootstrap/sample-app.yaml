@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  sample_web:
+    image: nginx
+    networks:
+      - infra_traefik
+    deploy:
+      placement:
+          constraints:
+            - node.role == worker
+      labels:
+        - "traefik.port=80"
+        - "traefik.docker.network=infra_traefik"
+        - "traefik.frontend.rule=Host:sampleweb.blingtowers.com"
+networks:
+  infra_traefik:
+    external: true

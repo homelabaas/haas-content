@@ -1,0 +1,25 @@
+Name: Full Docker Swarm
+VMPrefix: docker-swarm
+Tags:
+  environment: docker-swarm
+ScalingGroups:
+  - Cloudconfig: "Docker Swarm Master"
+    Network: "default"
+    Name: "master"
+    Basebuildconfig: "Ubuntu 18.04 Init Docker"
+    Count: 1
+    Size: "medium"
+    Tags:
+      nodetype: master
+  - Cloudconfig: "Docker Swarm Worker"
+    Network: "default"
+    Name: "worker"
+    Basebuildconfig: "Ubuntu 18.04 Init Docker"
+    Count: 4
+    Size: "small"
+    Tags:
+      nodetype: worker
+Swarm:
+  - composefile: "/contents/deployment-compose/traefik/docker-compose.yaml"
+    target: "master"
+

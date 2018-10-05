@@ -1,0 +1,78 @@
+version: "3.7"
+services:
+  portainer:
+    image: portainer/portainer
+    ports:
+      - "9000:9000"
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - portainer_data:/data
+    networks:
+      - agent_network
+  agent:
+    image: portainer/agent
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - agent_network
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+  dnsbridge:
+    image: registry.gitlab.com/homelab-devops/traefik-powerdns-bridge:latest
+    environment:
+      - TRAEFIK_API_URL=http://${TRAEFIK_HOST}/api
+      - POWERDNS_API_URL=http://${POWERDNS_HOST}/api/v1/servers/localhost
+      - LB_IP=${TARGET_HOST}
+      - POWERDNS_API_KEY=${POWERDNS_API_KEY}
+      - DNS_ZONE=${DNS_ZONE}
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+  traefik:
+    image: traefik:1.5
+    command:
+      - "--api"
+      - "--api.dashboard=true"
+      - "--docker"
+      - "--docker.swarmMode"
+      - "--docker.domain=${DNS_ZONE}"
+      - "--docker.watch"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+networks:
+  traefik:
+    driver: overlay
+    attachable: true
+  agent_network:
+    driver: overlay
+    attachable: true
+volumes:
+  portainer_data:

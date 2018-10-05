@@ -1,0 +1,4 @@
+Name: Openstack All in One
+Type: Packer
+File: allinone.json
+Requirement: Template

@@ -1,0 +1,3 @@
+Name: Docker Swarm Worker
+Type: Provisioner
+File: user-data.yml

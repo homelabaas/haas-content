@@ -1,0 +1,4 @@
+Name: Ubuntu 16.04 Clone
+Type: Packer
+File: ubuntu-16.04.json
+Requirement: Template

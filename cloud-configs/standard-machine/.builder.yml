@@ -1,0 +1,3 @@
+Name: Standard Docker Machine
+Type: Provisioner
+File: user-data.yml

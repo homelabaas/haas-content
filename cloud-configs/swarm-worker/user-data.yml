@@ -1,0 +1,9 @@
+#cloud-config
+
+runcmd:
+    - /usr/bin/configureminio.sh
+    - /usr/bin/syncfiles.sh
+    - chmod +x /minio/build/helper-scripts/*.sh
+    - /minio/build/helper-scripts/set-hostname.sh
+    - /minio/build/helper-scripts/set-worker.sh
+    - /minio/build/helper-scripts/enable-remote-docker.sh

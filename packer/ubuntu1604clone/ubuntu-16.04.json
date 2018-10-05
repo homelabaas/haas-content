@@ -1,0 +1,37 @@
+{
+  "variables": {
+    "USERNAME": "{{env `USERNAME`}}",
+    "PASSWORD": "{{env `PASSWORD`}}",
+    "SERVER": "{{env `SERVER`}}",
+    "HOST": "{{env `HOST`}}",
+    "VMNAME": "{{env `VMNAME`}}",
+    "DATASTORE": "{{env `DATASTORE`}}",
+    "SSH_USERNAME": "{{env `SSH_USERNAME`}}",
+    "SSH_PASSWORD": "{{env `SSH_PASSWORD`}}",
+    "TEMPLATE": "{{env `TEMPLATE`}}",
+    "FOLDER": "{{env `FOLDER`}}"
+  },
+  "builders": [
+    {
+      "type": "vsphere-clone",
+      "vcenter_server":      "{{user `SERVER`}}",
+      "username":            "{{user `USERNAME`}}",
+      "password":            "{{user `PASSWORD`}}",
+      "insecure_connection": "true",
+      "template": "{{user `TEMPLATE`}}",
+      "vm_name":   "{{user `VMNAME`}}",
+      "host":      "{{user `HOST`}}",
+      "folder":    "{{user `FOLDER`}}",
+      "datastore": "{{user `DATASTORE`}}",
+      "ssh_username": "{{user `SSH_USERNAME`}}",
+      "ssh_password": "{{user `SSH_PASSWORD`}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["ls /"]
+    }
+  ]
+}

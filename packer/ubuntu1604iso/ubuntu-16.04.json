@@ -1,0 +1,81 @@
+{
+  "variables": {
+    "USERNAME": "{{env `USERNAME`}}",
+    "PASSWORD": "{{env `PASSWORD`}}",
+    "SERVER": "{{env `SERVER`}}",
+    "DATASTORE": "{{env `DATASTORE`}}",
+    "NETWORK": "{{env `NETWORK`}}",
+    "HOST": "{{env `HOST`}}",
+    "VMNAME": "{{env `VMNAME`}}",
+    "ISO": "{{env `ISO`}}",
+    "SSH_USERNAME": "{{env `SSH_USERNAME`}}",
+    "SSH_PASSWORD": "{{env `SSH_PASSWORD`}}",
+    "FOLDER": "{{env `FOLDER`}}"
+  },
+  "builders": [
+    {
+      "type": "vsphere-iso",
+      "vcenter_server":      "{{user `SERVER`}}",
+      "username":            "{{user `USERNAME`}}",
+      "password":            "{{user `PASSWORD`}}",
+      "insecure_connection": "true",
+      "datastore": "{{user `DATASTORE`}}",
+      "network":   "{{user `NETWORK`}}",
+      "vm_name":   "{{user `VMNAME`}}",
+      "host":      "{{user `HOST`}}",
+      "folder":    "{{user `FOLDER`}}",
+
+      "guest_os_type": "ubuntu64Guest",
+
+      "ssh_username": "{{user `SSH_USERNAME`}}",
+      "ssh_password": "{{user `SSH_PASSWORD`}}",
+
+      "CPUs":             2,
+      "RAM":              2048,
+
+      "disk_controller_type":  "pvscsi",
+      "disk_size":        32000,
+      "disk_thin_provisioned": true,
+
+      "network_card": "vmxnet3",
+
+      "iso_paths": [
+        "{{user `ISO`}}"
+      ],
+      "floppy_files": [
+        "{{template_dir}}/preseed.cfg"
+      ],
+      "boot_command": [
+        "<enter><wait><f6><wait><esc><wait>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs>",
+        "/install/vmlinuz",
+        " initrd=/install/initrd.gz",
+        " priority=critical",
+        " locale=en_US",
+        " file=/media/preseed.cfg",
+        "<enter>"
+      ],
+      "boot_order": "disk,cdrom"
+    }
+  ],
+
+  "provisioners": [
+    {
+        "type": "shell",
+        "execute_command": "echo '{{ user `SSH_PASSWORD` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "environment_vars": [
+            "DEBIAN_FRONTEND=noninteractive",
+            "HOSTNAME_SET={{user `VMNAME`}}"
+        ],
+        "script": "{{template_dir}}/scripts/setup.sh"
+    }
+  ]
+}

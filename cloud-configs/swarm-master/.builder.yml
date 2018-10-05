@@ -1,0 +1,3 @@
+Name: Docker Swarm Master
+Type: Provisioner
+File: user-data.yml
