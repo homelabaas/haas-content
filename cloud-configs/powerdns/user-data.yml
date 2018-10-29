@@ -3,5 +3,5 @@
 runcmd:
     - /usr/bin/configureminio.sh
     - /usr/bin/syncfiles.sh
-    - chmod +x /minio/build/deployment-compose/powerdns/install.sh
-    - /minio/build/deployment-compose/powerdns/install.sh
+    - chmod +x /minio/deployment-compose/powerdns/install.sh
+    - /minio/deployment-compose/powerdns/install.sh
