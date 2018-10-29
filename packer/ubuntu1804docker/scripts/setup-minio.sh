@@ -19,7 +19,7 @@ cat >/usr/bin/syncfiles.sh <<EOL
 #!/bin/bash
 
 export MINIO_BUCKET=\`/usr/bin/vmtoolsd --cmd "info-get guestinfo.minio.bucket"\`
-mc cp minio/\$MINIO_BUCKET /minio --recursive
+mc cp minio/\$MINIO_BUCKET/ /minio --recursive
 EOL
 
 chmod +x /usr/bin/configureminio.sh

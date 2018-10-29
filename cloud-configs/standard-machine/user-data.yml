@@ -3,6 +3,6 @@
 runcmd:
     - /usr/bin/configureminio.sh
     - /usr/bin/syncfiles.sh
-    - chmod +x /minio/build/helper-scripts/*.sh
-    - /minio/build/helper-scripts/set-hostname.sh
-    - /minio/build/helper-scripts/enable-remote-docker.sh
+    - chmod +x /minio/helper-scripts/*.sh
+    - /minio/helper-scripts/set-hostname.sh
+    - /minio/helper-scripts/enable-remote-docker.sh
