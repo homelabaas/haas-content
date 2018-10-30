@@ -10,8 +10,7 @@
     "ISO": "{{env `ISO`}}",
     "SSH_USERNAME": "{{env `SSH_USERNAME`}}",
     "SSH_PASSWORD": "{{env `SSH_PASSWORD`}}",
-    "FOLDER": "{{env `FOLDER`}}",
-    "boot_command_prefix": "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>"
+    "FOLDER": "{{env `FOLDER`}}"
   },
   "builders": [
     {
@@ -30,7 +29,7 @@
 
       "ssh_username": "{{user `SSH_USERNAME`}}",
       "ssh_password": "{{user `SSH_PASSWORD`}}",
-
+      "ssh_keep_alive_interval":"5s",
       "CPUs":             2,
       "RAM":              2048,
 
@@ -39,7 +38,7 @@
       "disk_thin_provisioned": true,
 
       "network_card": "vmxnet3",
-
+      "shutdown_command": "echo '{{ user `SSH_PASSWORD` }}'|sudo -S shutdown -P now",
       "iso_paths": [
         "{{user `ISO`}}"
       ],
@@ -77,14 +76,15 @@
             "type": "shell",
             "execute_command": "echo '{{ user `SSH_PASSWORD` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
             "environment_vars": [
-                "DEBIAN_FRONTEND=noninteractive"
+                "DEBIAN_FRONTEND=noninteractive",
+                "SSH_USERNAME={{user `SSH_USERNAME`}}",
+                "SSH_PASSWORD={{user `SSH_PASSWORD`}}"
             ],
-            "script": "{{template_dir}}/scripts/setup.sh"
-        },
-        {
-            "type": "shell",
-            "execute_command": "echo '{{ user `SSH_PASSWORD` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-            "script": "{{template_dir}}/scripts/cleanup.sh"
+            "expect_disconnect": true,
+            "scripts": [
+              "{{template_dir}}/scripts/setup.sh",
+              "{{template_dir}}/scripts/cleanup.sh"
+            ]
         }
     ]
 }
