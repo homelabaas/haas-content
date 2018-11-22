@@ -8,7 +8,13 @@ cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
-kubeadm join 192.168.0.201:6443 --token 6xp864.lo2e5uvuiwp53jjl --discovery-token-ca-cert-hash sha256:aef8fbe4f2c38f1dd2ad71a659646084846b56edb56c3b2384e34a93f2f7bc9b
-
 SHA_TOKEN=`openssl x509 -in /etc/kubernetes/pki/ca.crt -noout -pubkey | openssl rsa -pubin -outform DER 2>/dev/null | sha256sum | cut -d' ' -f1`
 K8S_TOKEN=`kubeadm token list | cut -d' ' -f1 | sed -n 2p`
+MASTER_IP=`ip addr show ens192 | grep -Po 'inet \K[\d.]+'`
+
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
+
+./set-environment-value.sh masterip $WORKER_TOKEN
+./set-environment-value.sh shatoken $SHA_TOKEN
+./set-environment-value.sh k8stoken $K8S_TOKEN

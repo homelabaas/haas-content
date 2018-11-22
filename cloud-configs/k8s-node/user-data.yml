@@ -1,0 +1,8 @@
+#cloud-config
+
+runcmd:
+    - /usr/bin/configureminio.sh
+    - /usr/bin/syncfiles.sh
+    - chmod +x /minio/helper-scripts/*.sh
+    - /minio/helper-scripts/set-hostname.sh
+    - /minio/helper-scripts/join-k8s-cluster.sh
