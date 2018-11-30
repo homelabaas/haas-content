@@ -1,20 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt-get install -y apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-apt-get update
-apt-get install -y docker-ce
-groupadd docker
-echo "Add $DOCKERUSERNAME to docker group"
-usermod -aG docker $DOCKERUSERNAME
+apt-get install -y dnsmasq resolvconf
 
 # Fix dns on ubuntu 18.04 for docker containers (requires dnsmasq and resolvconf installed)
 

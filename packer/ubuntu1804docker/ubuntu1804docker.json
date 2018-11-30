@@ -4,6 +4,7 @@
       "PASSWORD": "{{env `PASSWORD`}}",
       "SERVER": "{{env `SERVER`}}",
       "HOST": "{{env `HOST`}}",
+      "CLUSTER": "{{env `CLUSTER`}}",
       "VMNAME": "{{env `VMNAME`}}",
       "DATASTORE": "{{env `DATASTORE`}}",
       "SSH_USERNAME": "{{env `SSH_USERNAME`}}",
@@ -21,6 +22,7 @@
         "template": "{{user `TEMPLATE`}}",
         "vm_name":   "{{user `VMNAME`}}",
         "host":      "{{user `HOST`}}",
+        "cluster":   "{{user `CLUSTER`}}",
         "folder":    "{{user `FOLDER`}}",
         "datastore": "{{user `DATASTORE`}}",
         "ssh_username": "{{user `SSH_USERNAME`}}",
@@ -36,25 +38,13 @@
                 "DEBIAN_FRONTEND=noninteractive",
                 "DOCKERUSERNAME={{user `SSH_USERNAME`}}"
             ],
-            "script": "{{template_dir}}/scripts/docker.sh"
-        },
-        {
-            "type": "shell",
-            "execute_command": "echo '{{ user `SSH_PASSWORD` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-            "environment_vars": [
-                "DEBIAN_FRONTEND=noninteractive"
-            ],
-            "script": "{{template_dir}}/scripts/cloudinit.sh"
-        },
-        {
-            "type": "shell",
-            "execute_command": "echo '{{ user `SSH_PASSWORD` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-            "script": "{{template_dir}}/scripts/setup-minio.sh"
-        },
-        {
-            "type": "shell",
-            "execute_command": "echo '{{ user `SSH_PASSWORD` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-            "script": "{{template_dir}}/scripts/cleanup.sh"
+            "scripts": [
+                "{{template_dir}}/scripts/docker.sh",
+                "{{template_dir}}/scripts/fix-dns.sh",
+                "{{template_dir}}/scripts/cloudinit.sh",
+                "{{template_dir}}/scripts/setup-minio.sh",
+                "{{template_dir}}/scripts/cleanup.sh"
+            ]
         }
     ]
   }

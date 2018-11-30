@@ -6,6 +6,7 @@
     "DATASTORE": "{{env `DATASTORE`}}",
     "NETWORK": "{{env `NETWORK`}}",
     "HOST": "{{env `HOST`}}",
+    "CLUSTER": "{{env `CLUSTER`}}",
     "VMNAME": "{{env `VMNAME`}}",
     "ISO": "{{env `ISO`}}",
     "SSH_USERNAME": "{{env `SSH_USERNAME`}}",
@@ -23,6 +24,7 @@
       "network":   "{{user `NETWORK`}}",
       "vm_name":   "{{user `VMNAME`}}",
       "host":      "{{user `HOST`}}",
+      "cluster":   "{{user `CLUSTER`}}",
       "folder":    "{{user `FOLDER`}}",
 
       "guest_os_type": "ubuntu64Guest",
