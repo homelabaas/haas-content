@@ -40,7 +40,6 @@
             ],
             "scripts": [
                 "{{template_dir}}/scripts/docker.sh",
-                "{{template_dir}}/scripts/fix-dns.sh",
                 "{{template_dir}}/scripts/cloudinit.sh",
                 "{{template_dir}}/scripts/setup-minio.sh",
                 "{{template_dir}}/scripts/cleanup.sh"
