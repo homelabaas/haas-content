@@ -5,4 +5,5 @@ runcmd:
     - /usr/bin/syncfiles.sh
     - chmod +x /minio/helper-scripts/*.sh
     - /minio/helper-scripts/set-hostname.sh
+    - /minio/helper-scripts/fix-dns.sh
     - /minio/helper-scripts/setup-k8s-master.sh
