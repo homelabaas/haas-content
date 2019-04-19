@@ -6,4 +6,5 @@ runcmd:
     - chmod +x /minio/deployment-compose/powerdns/install.sh
     - chmod +x /minio/helper-scripts/*.sh
     - /minio/helper-scripts/fix-dns.sh
+    - cd /minio/deployment-compose/powerdns
     - /minio/deployment-compose/powerdns/install.sh
