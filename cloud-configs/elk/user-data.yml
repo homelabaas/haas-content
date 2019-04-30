@@ -1,0 +1,10 @@
+#cloud-config
+
+runcmd:
+    - /usr/bin/configureminio.sh
+    - /usr/bin/syncfiles.sh
+    - chmod +x /minio/deployment-compose/elk/install.sh
+    - chmod +x /minio/helper-scripts/*.sh
+    - /minio/helper-scripts/fix-dns.sh
+    - cd /minio/deployment-compose/elk
+    - /minio/deployment-compose/elk/install.sh

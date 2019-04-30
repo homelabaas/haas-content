@@ -1,0 +1,3 @@
+Name: ELK
+Type: Provisioner
+File: user-data.yml
