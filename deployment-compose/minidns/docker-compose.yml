@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  dnsapi:
+    container_name: dns-api
+    image: homelabaas/dns-api
+    ports:
+      - "80:80"
+      - "53:53/udp"

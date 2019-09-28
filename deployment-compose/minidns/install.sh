@@ -6,5 +6,4 @@ chmod +x /usr/local/bin/docker-compose
 systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 
-docker-compose build
 docker-compose up -d
